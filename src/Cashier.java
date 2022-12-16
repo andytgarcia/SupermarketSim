@@ -10,7 +10,7 @@ public class Cashier extends Thread{
 
     private ConcurrentLinkedQueue<Customer> queue;
 
-    private boolean isOccupied = false;
+    private boolean isOccupied;
 
     public Cashier(ConcurrentLinkedQueue<Customer> queue){
         this.currentCustomer = queue.poll();
@@ -30,8 +30,10 @@ public class Cashier extends Thread{
             while (enterTime + checkoutTime > System.currentTimeMillis()) {
             }
             System.out.println(currentCustomer.toString() + " checked out and has left the store ");
+            this.stop();
 
         }
+
     }
 
 

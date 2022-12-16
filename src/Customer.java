@@ -17,6 +17,8 @@ public class Customer extends Thread {
 
     private ArrayList<Cashier> cashiers;
 
+    private boolean hasLeft;
+
 
 
 
@@ -32,6 +34,7 @@ public class Customer extends Thread {
         this.queue = queue;
         checkoutTime = 2000;
         cashiers = Main.cashiers;
+        hasLeft = false;
 
     }
 
@@ -49,16 +52,18 @@ public class Customer extends Thread {
         System.out.println(this.toString() + " is done shopping with shop time " + shopTime);
         queue.add(this);
         System.out.println(this.toString() + " has entered the queue");
-        for (int i = 0; i < cashiers.size(); i++) {
-            if (!cashiers.get(i).isOccupied()) {
-                cashiers.get(i).setOccupied(true);
-                cashiers.get(i).start();
-                cashiers.get(i).setOccupied(false);
+        while (!hasLeft) {
+            for (Cashier cashier : cashiers) {
+                if (!cashier.isOccupied()) {
+                    cashier.setOccupied(true);
+                    System.out.println(this + " has begun checking out");
+                    cashier.start();
+                    cashier.setOccupied(false);
+                    this.hasLeft = true;
+                } else
+                    continue;
             }
-            else
-                continue;
         }
-
 
 
         /*while (enterTime + checkoutTime > System.currentTimeMillis()) {
