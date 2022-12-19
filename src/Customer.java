@@ -25,15 +25,14 @@ public class Customer extends Thread {
 
 
 
-    public Customer(ConcurrentLinkedQueue<Customer> queue) {
+    public Customer() {
         id = nextID;
         nextID++;
         enterTime = System.currentTimeMillis();
         shopTime = (long)(minShopTime + Math.random() * (maxShopTime - minShopTime));
 
-        this.queue = queue;
+        this.queue = Main.shoppingQueue;
         checkoutTime = 2000;
-        cashiers = Main.cashiers;
         hasLeft = false;
 
     }
@@ -50,10 +49,10 @@ public class Customer extends Thread {
             continue;
         }
         System.out.println(this.toString() + " is done shopping with shop time " + shopTime);
-        queue.add(this);
+        Main.shoppingQueue.add(this);
         System.out.println(this.toString() + " has entered the queue");
         while (!hasLeft) {
-            for (Cashier cashier : cashiers) {
+            for (Cashier cashier: Main.cashiers) {
                 if (!cashier.isOccupied()) {
                     cashier.setOccupied(true);
                     System.out.println(this + " has begun checking out");

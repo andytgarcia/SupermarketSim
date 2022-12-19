@@ -9,12 +9,12 @@ public class CustomerFactory extends Thread{
 
     private ConcurrentLinkedQueue<Customer> queue;
 
-    public CustomerFactory(long timeSlice, long chance, ArrayList<Customer> customers, ConcurrentLinkedQueue<Customer> queue) {
+    public CustomerFactory(long timeSlice, long chance) {
         this.timeSlice = timeSlice;
         this.chance = chance;
-        this.customers = customers;
+        this.customers = Main.customers;
         nextAttempt = System.currentTimeMillis() + this.timeSlice;
-        this.queue = queue;
+        this.queue = Main.shoppingQueue;
     }
 
 
@@ -25,8 +25,8 @@ public class CustomerFactory extends Thread{
                 long randKey = (long)(1 + Math.random() * 100);
                 if (randKey <= chance) {
                     System.out.println("Factory made customer");
-                    Customer c = new Customer(queue);
-                    customers.add(c);
+                    Customer c = new Customer();
+                    Main.customers.add(c);
                     c.start();
                 }
                 else
