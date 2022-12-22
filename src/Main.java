@@ -13,14 +13,17 @@ public class Main extends Thread{
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("How long should Supermarket Sim run? ()");
+        System.out.print("How long should Supermarket Sim run? (milliseconds) ");
         long runTime = scanner.nextLong();
-
+        System.out.print("How many cashiers would you like? ");
+        int numOfcash = scanner.nextInt();
         long startTime = System.currentTimeMillis();
 
         CustomerFactory customerFactory = new CustomerFactory(5000, 50);
         customerFactory.start();
-        cashiers.add(new Cashier());
+        for(int i = 0; i < numOfcash; i++) {
+            cashiers.add(new Cashier());
+        }
         while(startTime + runTime > System.currentTimeMillis()) {
 
         }
@@ -28,12 +31,22 @@ public class Main extends Thread{
         System.out.println();
         System.out.println("Store is closing...");
         System.out.println();
-        while(!shoppingQueue.isEmpty() && finishedCustomers.size() != totalCustomers){
+        while(!shoppingQueue.isEmpty() && finishedCustomers.size() != totalCustomers && !store.isEmpty()){
 
         }
-        if(finishedCustomers.size() == totalCustomers && store.isEmpty()) {
+        try {
+            System.out.println("Finalizing...");
+            Thread.sleep(7500);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        if(store.isEmpty() && finishedCustomers.size() == totalCustomers && shoppingQueue.isEmpty()) {
         System.out.println();
         System.out.println("Supermarket Sim finished with " + runTime + " total time, " + finishedCustomers.size() + " total customers, and " + cashiers.size() + " cashiers");
+        System.out.println("Average shopping time per customer: " + getAverageShopTime() + " ms");
+        System.out.println("Average time in queue per customer: " + getAverageQueueTime() + " ms");
+        System.out.println("Average process time per customer: " + getAverageProcessTime() + " ms");
         }
 
 
@@ -42,7 +55,7 @@ public class Main extends Thread{
 
     }
 
-    public static int getAverageShopTime() {
+    public static double getAverageShopTime() {
         long sum = 0;
         int num = 0;
         if(finishedCustomers.size() == 0)
@@ -52,7 +65,34 @@ public class Main extends Thread{
             num++;
         }
 
-        return (int)(sum)/num;
+        return (double)(sum)/num;
+    }
+
+    public static double getAverageQueueTime() {
+        long sum = 0;
+        int num = 0;
+        if(finishedCustomers.size() == 0)
+        return 0;
+        for(int i = 0; i < finishedCustomers.size(); i++) {
+            sum += finishedCustomers.get(i).getQueueTime();
+            num++;
+        }
+
+        return (double)(sum)/num;
+    }
+
+    public static double getAverageProcessTime() {
+        long sum = 0;
+        int num = 0;
+        if(finishedCustomers.size() == 0)
+            return 0;
+        for(int i = 0; i < finishedCustomers.size(); i++) {
+            sum += finishedCustomers.get(i).getCheckoutTime();
+            num++;
+        }
+
+        return (double)(sum)/num;
+    
     }
 
 
