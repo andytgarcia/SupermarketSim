@@ -8,8 +8,9 @@ public class Customer extends Thread {
     private long leaveTime; //the time in milliseconds leaves the store
     private long minShopTime = 3000;
     private long maxShopTime = 20000;
-
-
+    private long enterQueueTime;
+    private long leaveQueueTime;
+    private long checkoutTime;
 
 
     public Customer() {
@@ -52,5 +53,25 @@ public class Customer extends Thread {
 
     public long getShopTime() {
         return shopTime;
+    }
+
+    public void setEnterQueueTime(long qTime) {
+        enterQueueTime = qTime;
+    }
+
+    public void setLeaveQueueTime(long qTime) {
+        leaveQueueTime = qTime;
+    }
+
+    public long getQueueTime() {
+        return leaveQueueTime - enterQueueTime;
+    }
+
+    public long getCheckoutTime() {
+        return checkoutTime;
+    }
+
+    public void setCheckoutTime(long cTime) {
+        checkoutTime = cTime;
     }
 }

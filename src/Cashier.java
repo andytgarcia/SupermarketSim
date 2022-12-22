@@ -2,6 +2,7 @@
 public class Cashier extends Thread{
     private Customer currentCustomer;
     private long enterTime;
+    private long exitTime;
     
 
     private long minCheckoutTime = 1000;
@@ -21,11 +22,12 @@ public class Cashier extends Thread{
     @Override
     public void run() {
         while(true) {
-            if(isOccupied == false) {
+            if(isOccupied == false) {   
         if (Main.shoppingQueue.isEmpty() == false) {
             currentCustomer = Main.shoppingQueue.poll();
             isOccupied = true;
-           enterTime = System.currentTimeMillis();
+            enterTime = System.currentTimeMillis();
+            currentCustomer.setEnterQueueTime(enterTime);
             }   
         }
 
@@ -35,6 +37,9 @@ public class Cashier extends Thread{
             }
             isOccupied = false;
             System.out.println(currentCustomer.toString() + " checked out with checkout time " + checkoutTime + " and has left the store ");
+            exitTime = System.currentTimeMillis();
+            currentCustomer.setLeaveQueueTime(exitTime);
+            currentCustomer.setCheckoutTime(checkoutTime);
             Main.finishedCustomers.add(currentCustomer);
             currentCustomer = null;
 
@@ -42,6 +47,10 @@ public class Cashier extends Thread{
 
     }
 
+    }
+
+    public long getCheckoutTime() {
+        return checkoutTime;
     }
 
 
