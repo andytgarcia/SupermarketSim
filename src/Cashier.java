@@ -22,16 +22,17 @@ public class Cashier extends Thread{
     @Override
     public void run() {
         while(true) {
-            if(isOccupied == false) {   
-        if (Main.shoppingQueue.isEmpty() == false) {
-            currentCustomer = Main.shoppingQueue.poll();
-            isOccupied = true;
-            enterTime = System.currentTimeMillis();
-            currentCustomer.setEnterQueueTime(enterTime);
+            if(!isOccupied) {
+                if (!Main.shoppingQueue.isEmpty()) {
+                    currentCustomer = Main.shoppingQueue.poll();
+                    isOccupied = true;
+                    enterTime = System.currentTimeMillis();
+
             }   
         }
 
         if(currentCustomer != null) {
+            currentCustomer.setEnterQueueTime(enterTime);
             while (enterTime + checkoutTime > System.currentTimeMillis()) {
                 
             }

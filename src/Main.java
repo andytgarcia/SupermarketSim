@@ -10,6 +10,8 @@ public class Main extends Thread{
     static int totalCustomers = 0;
 
     static boolean isRunning = true;
+    static boolean isFinishing = false;
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -31,24 +33,28 @@ public class Main extends Thread{
         System.out.println();
         System.out.println("Store is closing...");
         System.out.println();
+        isFinishing = true;
         while(!shoppingQueue.isEmpty() && finishedCustomers.size() != totalCustomers && !store.isEmpty()){
 
         }
         try {
             System.out.println("Finalizing...");
-            Thread.sleep(7500);
+            Thread.sleep(9000L);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        if(store.isEmpty() && finishedCustomers.size() == totalCustomers && shoppingQueue.isEmpty()) {
-        System.out.println();
-        System.out.println("Supermarket Sim finished with " + runTime + " total time, " + finishedCustomers.size() + " total customers, and " + cashiers.size() + " cashiers");
-        System.out.println("Average shopping time per customer: " + getAverageShopTime() + " ms");
-        System.out.println("Average time in queue per customer: " + getAverageQueueTime() + " ms");
-        System.out.println("Average process time per customer: " + getAverageProcessTime() + " ms");
-        }
+        while (isFinishing) {
+            if ((store.isEmpty()) && totalCustomers == finishedCustomers.size()) {
+                System.out.println();
+                System.out.println("Supermarket Sim finished with " + runTime + " total time, " + finishedCustomers.size() + " total customers, and " + cashiers.size() + " cashiers");
+                System.out.println("Average shopping time per customer: " + getAverageShopTime() + " ms");
+                System.out.println("Average time in queue per customer: " + getAverageQueueTime() + " ms");
+                System.out.println("Average process time per customer: " + getAverageProcessTime() + " ms");
+                isFinishing = !isFinishing;
 
+            }
+        }
 
         
 

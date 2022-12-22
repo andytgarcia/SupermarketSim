@@ -5,13 +5,12 @@ public class CustomerFactory extends Thread{
     private long chance;
     private long nextAttempt;
 
-    private ConcurrentLinkedQueue<Customer> queue;
+
 
     public CustomerFactory(long timeSlice, long chance) {
         this.timeSlice = timeSlice;
         this.chance = chance;
         nextAttempt = System.currentTimeMillis() + this.timeSlice;
-        this.queue = Main.shoppingQueue;
     }
 
 
